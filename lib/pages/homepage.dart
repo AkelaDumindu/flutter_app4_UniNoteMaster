@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app4_uninotemaster/utils/constant.dart';
+import 'package:flutter_app4_uninotemaster/utils/router_pages.dart';
 import 'package:flutter_app4_uninotemaster/utils/text_style.dart';
 import 'package:flutter_app4_uninotemaster/widget/note_todo_card.dart';
 import 'package:flutter_app4_uninotemaster/widget/progress_card.dart';
@@ -21,7 +22,7 @@ class _HomepageState extends State<Homepage> {
           style: AppTextStyles.appTitle,
         ),
       ),
-      body: const Padding(
+      body: Padding(
         padding: EdgeInsets.all(8),
         child: Column(
           children: [
@@ -38,15 +39,27 @@ class _HomepageState extends State<Homepage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                NoteTodoCard(
-                  title: "Notes",
-                  description: "3 notes",
-                  icon: Icons.bookmark_add_outlined,
+                GestureDetector(
+                  onTap: () {
+                    // go ot the notes page
+                    RouterClass.router.push("/notes");
+                  },
+                  child: NoteTodoCard(
+                    title: "Notes",
+                    description: "3 notes",
+                    icon: Icons.bookmark_add_outlined,
+                  ),
                 ),
-                NoteTodoCard(
-                  title: "Assignment",
-                  description: "3 Tasks",
-                  icon: Icons.today_outlined,
+                GestureDetector(
+                  onTap: () {
+                    // go to the assignment page
+                    RouterClass.router.push("/assignment");
+                  },
+                  child: NoteTodoCard(
+                    title: "Assignment",
+                    description: "3 Tasks",
+                    icon: Icons.today_outlined,
+                  ),
                 ),
               ],
             ),

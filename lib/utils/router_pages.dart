@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app4_uninotemaster/pages/assignment_page.dart';
 import 'package:flutter_app4_uninotemaster/pages/homepage.dart';
+import 'package:flutter_app4_uninotemaster/pages/note_page.dart';
 import 'package:go_router/go_router.dart';
 
 class RouterClass {
@@ -15,6 +17,25 @@ class RouterClass {
         path: "/",
         builder: (context, state) {
           return const Homepage();
+        },
+      ),
+
+      //notes
+
+      GoRoute(
+        name: "notes",
+        path: "/notes",
+        builder: (context, state) {
+          return NotePage();
+        },
+      ),
+
+      //assignment
+      GoRoute(
+        name: "asignment",
+        path: "/assignment",
+        builder: (context, state) {
+          return AssignmentPage();
         },
       )
     ],
