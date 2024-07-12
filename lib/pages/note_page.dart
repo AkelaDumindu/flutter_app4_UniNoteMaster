@@ -21,13 +21,13 @@ class _NotePageState extends State<NotePage> {
           onPressed: () {
             RouterClass.router.go("/");
           },
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(100),
           ),
           side: BorderSide(
@@ -41,7 +41,7 @@ class _NotePageState extends State<NotePage> {
           size: 30,
         ),
       ),
-      body: Padding(
+      body: const Padding(
         padding: EdgeInsets.all(AppConstants.kDefaultPadding),
         child: Column(
           children: [

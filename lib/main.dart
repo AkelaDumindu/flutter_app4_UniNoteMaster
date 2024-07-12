@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app4_uninotemaster/modals/assignment_modals.dart';
+import 'package:flutter_app4_uninotemaster/modals/note_modals.dart';
 import 'package:flutter_app4_uninotemaster/utils/router_pages.dart';
 import 'package:flutter_app4_uninotemaster/utils/theme_data.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
+void main() async {
+  // initilize hive
+  await Hive.initFlutter();
+
+  // register the adaptors
+  Hive.registerAdapter(NoteModalsAdapter());
+  Hive.registerAdapter(AssignmentModalsAdapter());
+
+//create boxes (boxes like a table)
+  await Hive.openBox('notes');
+  await Hive.openBox('assignment');
+
   runApp(const MyApp());
 }
 

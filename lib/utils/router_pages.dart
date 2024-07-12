@@ -26,16 +26,16 @@ class RouterClass {
         name: "notes",
         path: "/notes",
         builder: (context, state) {
-          return NotePage();
+          return const NotePage();
         },
       ),
 
       //assignment
       GoRoute(
-        name: "asignment",
+        name: "assignment",
         path: "/assignment",
         builder: (context, state) {
-          return AssignmentPage();
+          return const AssignmentPage();
         },
       )
     ],

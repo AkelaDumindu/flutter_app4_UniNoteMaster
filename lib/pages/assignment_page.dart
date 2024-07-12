@@ -12,7 +12,7 @@ class _AssignmentPageState extends State<AssignmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Assignment"),
+        title: const Text("Assignment"),
       ),
     );
   }

@@ -36,14 +36,14 @@ class _NoteTodoCardState extends State<NoteTodoCard> {
               widget.icon,
               size: 40,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
               widget.title,
               style: AppTextStyles.appDescription,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(

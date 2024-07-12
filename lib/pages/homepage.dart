@@ -23,17 +23,17 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            ProgressCard(
+            const ProgressCard(
               completedTask: 2,
               totalTask: 5,
             ),
-            SizedBox(
+            const SizedBox(
               height: AppConstants.kDefaultPadding * 1.5,
             ),
             Row(
@@ -44,7 +44,7 @@ class _HomepageState extends State<Homepage> {
                     // go ot the notes page
                     RouterClass.router.push("/notes");
                   },
-                  child: NoteTodoCard(
+                  child: const NoteTodoCard(
                     title: "Notes",
                     description: "3 notes",
                     icon: Icons.bookmark_add_outlined,
@@ -55,7 +55,7 @@ class _HomepageState extends State<Homepage> {
                     // go to the assignment page
                     RouterClass.router.push("/assignment");
                   },
-                  child: NoteTodoCard(
+                  child: const NoteTodoCard(
                     title: "Assignment",
                     description: "3 Tasks",
                     icon: Icons.today_outlined,
@@ -63,10 +63,10 @@ class _HomepageState extends State<Homepage> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: AppConstants.kDefaultPadding * 1.5,
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
