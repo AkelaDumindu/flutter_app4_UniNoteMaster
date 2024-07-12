@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app4_uninotemaster/modals/assignment_modals.dart';
+import 'package:flutter_app4_uninotemaster/modals/note_modals.dart';
 import 'package:flutter_app4_uninotemaster/utils/constant.dart';
 import 'package:flutter_app4_uninotemaster/utils/router_pages.dart';
 import 'package:flutter_app4_uninotemaster/utils/text_style.dart';
