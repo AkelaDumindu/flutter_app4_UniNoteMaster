@@ -15,16 +15,16 @@ class NotePage extends StatefulWidget {
 
 class _NotePageState extends State<NotePage> {
   List<NoteModals> allNotes = [];
-
   final NoteService noteService = NoteService();
+  Map<String, List<NoteModals>> notesWithCategory = {};
 
   @override
   void initState() {
     super.initState();
-    _checkIfUserIsNew();
+    _checkIfUserIsNewAndCreateInitialNotes();
   }
 
-  void _checkIfUserIsNew() async {
+  void _checkIfUserIsNewAndCreateInitialNotes() async {
     // Check if the notes box is empty
     final bool isNewUser = await noteService.isNewUser();
 
@@ -39,10 +39,13 @@ class _NotePageState extends State<NotePage> {
 
   Future<void> _loadNotes() async {
     final List<NoteModals> loadedNotes = await noteService.loadNote();
+    final Map<String, List<NoteModals>> notesCategories =
+        noteService.GetNotesByCategoryMap(loadedNotes);
     setState(() {
       allNotes = loadedNotes;
+      notesWithCategory = notesCategories;
     });
-    print(allNotes.length);
+    print(notesWithCategory);
   }
 
   @override

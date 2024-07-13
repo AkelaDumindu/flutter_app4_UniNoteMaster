@@ -53,4 +53,20 @@ class NoteService {
     }
     return [];
   }
+
+  //loop through all notes and create an object where the key is the category and the value is the notes in that category
+
+  Map<String, List<NoteModals>> GetNotesByCategoryMap(
+      List<NoteModals> allNotes) {
+    final Map<String, List<NoteModals>> noteByCategory = {};
+
+    for (final note in allNotes) {
+      if (noteByCategory.containsKey(note.category)) {
+        noteByCategory[note.category]!.add(note);
+      } else {
+        noteByCategory[note.category] = [note];
+      }
+    }
+    return noteByCategory;
+  }
 }
