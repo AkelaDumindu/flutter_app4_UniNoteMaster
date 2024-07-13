@@ -5,6 +5,7 @@ import 'package:flutter_app4_uninotemaster/utils/colors.dart';
 import 'package:flutter_app4_uninotemaster/utils/constant.dart';
 import 'package:flutter_app4_uninotemaster/utils/router_pages.dart';
 import 'package:flutter_app4_uninotemaster/utils/text_style.dart';
+import 'package:flutter_app4_uninotemaster/widget/notes_card.dart';
 
 class NotePage extends StatefulWidget {
   const NotePage({super.key});
@@ -77,14 +78,58 @@ class _NotePageState extends State<NotePage> {
           size: 30,
         ),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(AppConstants.kDefaultPadding),
+      body: Padding(
+        padding: const EdgeInsets.all(AppConstants.kDefaultPadding),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Notes",
               style: AppTextStyles.appTitle,
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            allNotes.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Center(
+                      child: Text(
+                        "No notes available , click on the + button to add a new note",
+                        style: TextStyle(
+                          color: AppColors.kWhiteColor.withOpacity(0.7),
+                          fontSize: AppConstants.kDefaultPadding,
+                        ),
+                      ),
+                    ),
+                  )
+                : GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: AppConstants.kDefaultPadding,
+                      mainAxisSpacing: AppConstants.kDefaultPadding,
+                      childAspectRatio: 6 / 4,
+                    ),
+                    itemCount: notesWithCategory.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          RouterClass.router.push(
+                            "/category",
+                            extra: notesWithCategory.keys.elementAt(index),
+                          );
+                        },
+                        child: NotesCard(
+                          noteCategory: notesWithCategory.keys.elementAt(index),
+                          noteCount:
+                              notesWithCategory.values.elementAt(index).length,
+                        ),
+                      );
+                    },
+                  ),
           ],
         ),
       ),
