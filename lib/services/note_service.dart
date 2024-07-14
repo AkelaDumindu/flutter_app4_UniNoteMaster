@@ -110,4 +110,17 @@ class NoteService {
       print(e);
     }
   }
+  //load the all the categories
+
+  Future<List<String>> getAllCategories() async {
+    final List<String> categories = [];
+    //get all notes from the box
+    final dynamic allNotes = await _myBox.get("notes");
+    for (final note in allNotes) {
+      if (!categories.contains(note.category)) {
+        categories.add(note.category);
+      }
+    }
+    return categories;
+  }
 }
