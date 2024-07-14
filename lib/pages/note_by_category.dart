@@ -24,16 +24,14 @@ class _NoteByCategoryState extends State<NoteByCategory> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _loadCategorynote();
-    });
+    _loadCategorynote();
   }
 
-  // load relevant category note
+  // Load relevant category note
   Future<void> _loadCategorynote() async {
-    noteList = await noteService.getNotesBYCategory(widget.category);
+    final notes = await noteService.getNotesBYCategory(widget.category);
     setState(() {
-      print(noteList.length);
+      noteList = notes;
     });
   }
 
@@ -45,9 +43,7 @@ class _NoteByCategoryState extends State<NoteByCategory> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            RouterClass.router.push(
-              "/notes",
-            );
+            RouterClass.router.push("/notes");
           },
         ),
       ),
@@ -59,32 +55,33 @@ class _NoteByCategoryState extends State<NoteByCategory> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               Text(
                 widget.category,
                 style: AppTextStyles.appTitle,
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: AppConstants.kDefaultPadding,
-                  mainAxisExtent: AppConstants.kDefaultPadding,
+                  mainAxisSpacing: AppConstants.kDefaultPadding,
                   childAspectRatio: 7 / 11,
                 ),
                 itemCount: noteList.length,
                 itemBuilder: (context, index) {
+                  final note = noteList[index];
                   return NoteCategoryCard(
-                    title: noteList[index].title,
-                    categoryContent: noteList[index].content,
-                    removeNote: () async {},
-                    editNote: () async {},
+                    title: note.title,
+                    categoryContent: note.content,
+                    removeNote: () async {
+                      // Add your remove note logic here
+                    },
+                    editNote: () async {
+                      // Add your edit note logic here
+                    },
                   );
                 },
               )

@@ -6,6 +6,7 @@ import 'package:flutter_app4_uninotemaster/utils/constant.dart';
 import 'package:flutter_app4_uninotemaster/utils/router_pages.dart';
 import 'package:flutter_app4_uninotemaster/utils/text_style.dart';
 import 'package:flutter_app4_uninotemaster/widget/notes_card.dart';
+import 'package:flutter_app4_uninotemaster/widget/open_bottom_sheet.dart';
 
 class NotePage extends StatefulWidget {
   const NotePage({super.key});
@@ -49,6 +50,33 @@ class _NotePageState extends State<NotePage> {
     print(notesWithCategory);
   }
 
+  //open bottom sheet
+  void openBottomSheet() {
+    showModalBottomSheet(
+      //after opening modal back ground of note page
+      barrierColor: AppColors.kWhiteColor.withOpacity(0.7),
+      context: context,
+      builder: (context) {
+        return OpenBottomSheetWidget(
+          onNewNote: () {
+            //after click close modal
+            Navigator.pop(context);
+
+            // if extra value is false already have a category so go to create new note, as well as go to same page change according to the bool value, parameter assign according to the cretae new note page
+            RouterClass.router.push("/create-note", extra: false);
+          },
+          onNewCategory: () {
+            //after click close modal
+            Navigator.pop(context);
+
+            // if extra value is true, should create category for that so go to create new category, as well as go to same page change according to the bool value, parameter assign according to the cretae new note page
+            RouterClass.router.push("/create-note", extra: true);
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +90,9 @@ class _NotePageState extends State<NotePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          openBottomSheet();
+        },
         shape: RoundedRectangleBorder(
           borderRadius: const BorderRadius.all(
             Radius.circular(100),

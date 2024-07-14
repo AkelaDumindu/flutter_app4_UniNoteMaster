@@ -59,11 +59,11 @@ class _NoteCategoryCardState extends State<NoteCategoryCard> {
               overflow: TextOverflow.ellipsis,
             ),
             Text(
-              widget.title,
+              widget.categoryContent,
               style: AppTextStyles.appDescriptionSmall.copyWith(
                 color: AppColors.kWhiteColor.withOpacity(0.5),
               ),
-              maxLines: 1,
+              maxLines: 6,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
             ),
