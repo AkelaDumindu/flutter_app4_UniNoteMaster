@@ -5,6 +5,7 @@ import 'package:flutter_app4_uninotemaster/pages/create_new_note.dart';
 import 'package:flutter_app4_uninotemaster/pages/homepage.dart';
 import 'package:flutter_app4_uninotemaster/pages/note_by_category.dart';
 import 'package:flutter_app4_uninotemaster/pages/note_page.dart';
+import 'package:flutter_app4_uninotemaster/pages/single_note.dart';
 import 'package:flutter_app4_uninotemaster/pages/update_note.dart';
 import 'package:go_router/go_router.dart';
 
@@ -75,7 +76,18 @@ class RouterClass {
             note: note,
           );
         },
-      )
+      ),
+
+      GoRoute(
+        name: "single note",
+        path: "/single-note",
+        builder: (context, state) {
+          final NoteModals note = state.extra as NoteModals;
+          return SingleNotePage(
+            note: note,
+          );
+        },
+      ),
     ],
   );
 }

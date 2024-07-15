@@ -108,6 +108,10 @@ class _NoteByCategoryState extends State<NoteByCategory> {
                       // Add your edit note logic here
                       _editNote(noteList[index]);
                     },
+                    singleNote: () {
+                      RouterClass.router
+                          .push("/single-note", extra: noteList[index]);
+                    },
                   );
                 },
               )

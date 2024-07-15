@@ -7,12 +7,14 @@ class NoteCategoryCard extends StatefulWidget {
   final String categoryContent;
   final Future Function() removeNote;
   final Future Function() editNote;
+  final void Function() singleNote;
   const NoteCategoryCard({
     super.key,
     required this.title,
     required this.categoryContent,
     required this.removeNote,
     required this.editNote,
+    required this.singleNote,
   });
 
   @override
@@ -52,20 +54,28 @@ class _NoteCategoryCardState extends State<NoteCategoryCard> {
                 ),
               ],
             ),
-            Text(
-              widget.title,
-              style: AppTextStyles.appSubtitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Text(
-              widget.categoryContent,
-              style: AppTextStyles.appDescriptionSmall.copyWith(
-                color: AppColors.kWhiteColor.withOpacity(0.5),
+            GestureDetector(
+              onTap: widget.singleNote,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.title,
+                    style: AppTextStyles.appSubtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    widget.categoryContent,
+                    style: AppTextStyles.appDescriptionSmall.copyWith(
+                      color: AppColors.kWhiteColor.withOpacity(0.5),
+                    ),
+                    maxLines: 6,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
               ),
-              maxLines: 6,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.left,
             ),
           ],
         ),
