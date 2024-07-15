@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app4_uninotemaster/helpers/snackbar.dart';
 import 'package:flutter_app4_uninotemaster/modals/note_modals.dart';
 import 'package:flutter_app4_uninotemaster/services/note_service.dart';
 import 'package:flutter_app4_uninotemaster/utils/constant.dart';
@@ -33,6 +34,26 @@ class _NoteByCategoryState extends State<NoteByCategory> {
     setState(() {
       noteList = notes;
     });
+  }
+
+  // edit note
+  void _editNote(NoteModals note) {
+    // navigate to edit page
+    RouterClass.router.push("/edit-note", extra: note);
+  }
+
+  // delete note
+
+  Future<void> _deleteNote(String id) async {
+    try {
+      await noteService.deleteNote(id);
+      if (context.mounted) {
+        AppHelpers.showSnackBar(context, "Note deleted successfully");
+      }
+    } catch (e) {
+      AppHelpers.showSnackBar(context, "deleted note is failed");
+      print(e.toString());
+    }
   }
 
   @override
@@ -78,9 +99,14 @@ class _NoteByCategoryState extends State<NoteByCategory> {
                     categoryContent: note.content,
                     removeNote: () async {
                       // Add your remove note logic here
+                      await _deleteNote(noteList[index].id);
+                      setState(() {
+                        noteList.removeAt(index);
+                      });
                     },
                     editNote: () async {
                       // Add your edit note logic here
+                      _editNote(noteList[index]);
                     },
                   );
                 },

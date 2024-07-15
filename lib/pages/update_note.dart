@@ -9,15 +9,15 @@ import 'package:flutter_app4_uninotemaster/utils/text_style.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 
-class CreateNewNotePage extends StatefulWidget {
-  final bool isNewCategory;
-  const CreateNewNotePage({super.key, required this.isNewCategory});
+class UpdateNote extends StatefulWidget {
+  final NoteModals note;
+  const UpdateNote({super.key, required this.note});
 
   @override
-  State<CreateNewNotePage> createState() => _CreateNewNotePageState();
+  State<UpdateNote> createState() => _UpdateNoteState();
 }
 
-class _CreateNewNotePageState extends State<CreateNewNotePage> {
+class _UpdateNoteState extends State<UpdateNote> {
   List<String> categories = [];
   final NoteService noteService = NoteService();
 
@@ -45,7 +45,9 @@ class _CreateNewNotePageState extends State<CreateNewNotePage> {
 
   @override
   void initState() {
-    category;
+    _noteTitleCotroller.text = widget.note.title;
+    _noteContentCotroller.text = widget.note.content;
+    category = widget.note.category;
     _loadCategories();
     super.initState();
   }
@@ -55,7 +57,7 @@ class _CreateNewNotePageState extends State<CreateNewNotePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Create New Note",
+          "Update Note",
           style: AppTextStyles.appSubtitle,
         ),
       ),
@@ -73,110 +75,58 @@ class _CreateNewNotePageState extends State<CreateNewNotePage> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    widget.isNewCategory
-                        ? Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextFormField(
-                              controller: _noteCategoryCotroller,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a category';
-                                }
-                                return null;
-                              },
-                              style: TextStyle(
-                                color: AppColors.kWhiteColor,
-                                fontFamily: GoogleFonts.outfit().fontFamily,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: 'New Category',
-                                hintStyle: TextStyle(
-                                  color: AppColors.kWhiteColor.withOpacity(0.5),
-                                  fontFamily: GoogleFonts.outfit().fontFamily,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 20,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      AppConstants.kDefaultPadding),
-                                  borderSide: BorderSide(
-                                    color:
-                                        AppColors.kWhiteColor.withOpacity(0.1),
-                                    width: 2,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      AppConstants.kDefaultPadding),
-                                  borderSide: BorderSide(
-                                    color: AppColors.kWhiteColor,
-                                    width: 1,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
 
-                            // add category dropdown menu
-                            child: DropdownButtonFormField(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Select a category';
-                                }
-                                return null;
-                              },
-                              style: TextStyle(
-                                color: AppColors.kWhiteColor,
-                                fontFamily: GoogleFonts.outfit().fontFamily,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20,
-                              ),
-                              isExpanded: false,
-                              hint: const Text(
-                                'Category',
-                              ),
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide(
-                                    color:
-                                        AppColors.kWhiteColor.withOpacity(0.1),
-                                    width: 2,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide(
-                                    color: AppColors.kWhiteColor,
-                                    width: 1,
-                                  ),
-                                ),
-                              ),
-                              items: categories.map((String category) {
-                                return DropdownMenuItem<String>(
-                                  alignment: Alignment.centerLeft,
-                                  value: category,
-                                  child: Text(
-                                    category,
-                                    style: AppTextStyles.appButton,
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (String? value) {
-                                setState(() {
-                                  category = value!;
-                                });
-                              },
+                      // add category dropdown menu
+                      child: DropdownButtonFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Select a category';
+                          }
+                          return null;
+                        },
+                        style: TextStyle(
+                          color: AppColors.kWhiteColor,
+                          fontFamily: GoogleFonts.outfit().fontFamily,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                        ),
+                        isExpanded: false,
+                        hint: Text(
+                          category,
+                        ),
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: AppColors.kWhiteColor.withOpacity(0.1),
+                              width: 2,
                             ),
                           ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: AppColors.kWhiteColor,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        items: categories.map((String category) {
+                          return DropdownMenuItem<String>(
+                            alignment: Alignment.centerLeft,
+                            value: category,
+                            child: Text(
+                              category,
+                              style: AppTextStyles.appButton,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {},
+                      ),
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -265,34 +215,37 @@ class _CreateNewNotePageState extends State<CreateNewNotePage> {
                             if (_formKey.currentState!.validate()) {
                               try {
                                 final NoteService noteService = NoteService();
-                                noteService.addNewNote(
+
+                                // update the note
+                                noteService.updateNote(
+                                  // create a new note object
                                   NoteModals(
+                                    id: widget.note.id,
                                     title: _noteTitleCotroller.text,
-                                    category: widget.isNewCategory
-                                        ? _noteCategoryCotroller.text
-                                        : category,
+                                    category: category,
                                     content: _noteContentCotroller.text,
                                     date: DateTime.now(),
-                                    id: const Uuid().v4(),
                                   ),
                                 );
+                                //show a snackbar
+                                AppHelpers.showSnackBar(
+                                  context,
+                                  'Note Updated successfully',
+                                );
 
-                                // snack bar
-                                AppHelpers.showSnackBar(
-                                    context, "Note Saved Succesfully!");
-                                _noteContentCotroller.clear();
+                                //clear the form
                                 _noteTitleCotroller.clear();
-                                RouterClass.router.go("/notes");
+                                _noteContentCotroller.clear();
+                                RouterClass.router.push("/notes");
                               } catch (e) {
-                                AppHelpers.showSnackBar(
-                                    context, "Note save failed!");
+                                print(e.toString());
                               }
                             }
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(10),
                             child: Text(
-                              "Save Note",
+                              "Update Note",
                               style: AppTextStyles.appButton,
                             ),
                           ),
