@@ -123,4 +123,16 @@ class NoteService {
     }
     return categories;
   }
+
+  //method to add to new note
+  Future<void> addNewNote(NoteModals note) async {
+    try {
+      //get all notes from the box
+      final dynamic allNotes = await _myBox.get("notes");
+      allNotes.add(note);
+      await _myBox.put("notes", allNotes);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
