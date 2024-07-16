@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app4_uninotemaster/modals/assignment_modals.dart';
 
 class CompletedTab extends StatefulWidget {
-  const CompletedTab({super.key});
+  final List<AssignmentModals> completedAssignments;
+  const CompletedTab({
+    super.key,
+    required this.completedAssignments,
+  });
 
   @override
   State<CompletedTab> createState() => _CompletedTabState();
