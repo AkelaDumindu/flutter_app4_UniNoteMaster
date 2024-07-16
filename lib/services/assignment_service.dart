@@ -63,4 +63,15 @@ class AssignmentService {
       print(e);
     }
   }
+
+  // add assignments
+  Future<void> addAssignment(AssignmentModals ass) async {
+    try {
+      final dynamic allAss = await _myBox.get("ass");
+      allAss.add(ass);
+      await _myBox.put("ass", allAss);
+    } catch (e) {
+      print(e);
+    }
+  }
 }

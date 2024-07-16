@@ -7,7 +7,6 @@ import 'package:flutter_app4_uninotemaster/utils/constant.dart';
 import 'package:flutter_app4_uninotemaster/utils/router_pages.dart';
 import 'package:flutter_app4_uninotemaster/utils/text_style.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uuid/uuid.dart';
 
 class UpdateNote extends StatefulWidget {
   final NoteModals note;
