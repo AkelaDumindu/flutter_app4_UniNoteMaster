@@ -17,7 +17,7 @@ void main() async {
 
 //create boxes (boxes like a table)
   await Hive.openBox('notes');
-  await Hive.openBox('assignment');
+  await Hive.openBox('ass');
 
   runApp(const MyApp());
 }

@@ -6,10 +6,12 @@ import 'package:flutter_app4_uninotemaster/utils/text_style.dart';
 class AssignmentCard extends StatefulWidget {
   final AssignmentModals assignments;
   final bool isCompleted;
+  final Function() onCheckBoxChanged;
   const AssignmentCard({
     super.key,
     required this.assignments,
     required this.isCompleted,
+    required this.onCheckBoxChanged,
   });
 
   @override
@@ -49,7 +51,7 @@ class _AssignmentCardState extends State<AssignmentCard> {
         ),
         trailing: Checkbox(
           value: widget.isCompleted,
-          onChanged: (value) {},
+          onChanged: (bool? value) => widget.onCheckBoxChanged(),
         ),
       ),
     );

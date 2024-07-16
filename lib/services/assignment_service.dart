@@ -28,7 +28,7 @@ class AssignmentService {
   ];
 
   //create the databse reference for note
-  final _myBox = Hive.box('assignments');
+  final _myBox = Hive.box('ass');
 
   // check the user is new?
   Future<bool> isNewUser() async {
@@ -38,16 +38,29 @@ class AssignmentService {
   // method to create initial notes if the box is empty
   Future<void> createInitialAssignment() async {
     if (_myBox.isEmpty) {
-      await _myBox.put("assignments", allAssignments);
+      await _myBox.put("ass", allAssignments);
     }
   }
 
   // Method to load to notes
   Future<List<AssignmentModals>> loadAssignment() async {
-    final dynamic ass = await _myBox.get('assignments');
+    final dynamic ass = await _myBox.get('ass');
     if (ass != null && ass is List<dynamic>) {
       return ass.cast<AssignmentModals>().toList();
     }
     return [];
+  }
+
+// mark assignment also done
+  Future<void> markAsDone(AssignmentModals ass) async {
+    try {
+      //get all todos from the box
+      final dynamic allAss = await _myBox.get("ass");
+      final int index = allAss.indexWhere((element) => element.id == ass.id);
+      allAss[index] = ass;
+      await _myBox.put("ass", allAss);
+    } catch (e) {
+      print(e);
+    }
   }
 }

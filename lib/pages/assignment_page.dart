@@ -104,9 +104,11 @@ class _AssignmentPageState extends State<AssignmentPage>
         children: [
           AssignmentTab(
             incompletedAssignment: incompletedAssignments,
+            completedAssignment: completedAssignments,
           ),
           CompletedTab(
             completedAssignments: completedAssignments,
+            inCompletedAssignments: incompletedAssignments,
           ),
         ],
       ),
