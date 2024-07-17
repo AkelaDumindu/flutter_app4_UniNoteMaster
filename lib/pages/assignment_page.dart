@@ -80,8 +80,10 @@ class _AssignmentPageState extends State<AssignmentPage>
         setState(() {
           allAssignments.add(newAss);
           incompletedAssignments.add(newAss);
+          _loadAssignment();
         });
-
+        _assignmentController.clear();
+        // ignore: use_build_context_synchronously
         AppHelpers.showSnackBar(context, "Task Added");
         Navigator.pop(context);
       }

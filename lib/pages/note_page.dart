@@ -64,6 +64,9 @@ class _NotePageState extends State<NotePage> {
 
             // if extra value is false already have a category so go to create new note, as well as go to same page change according to the bool value, parameter assign according to the cretae new note page
             RouterClass.router.push("/create-note", extra: false);
+            setState(() {
+              _loadNotes();
+            });
           },
           onNewCategory: () {
             //after click close modal
@@ -71,6 +74,9 @@ class _NotePageState extends State<NotePage> {
 
             // if extra value is true, should create category for that so go to create new category, as well as go to same page change according to the bool value, parameter assign according to the cretae new note page
             RouterClass.router.push("/create-note", extra: true);
+            setState(() {
+              _loadNotes();
+            });
           },
         );
       },

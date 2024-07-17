@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app4_uninotemaster/modals/assignment_modals.dart';
 import 'package:flutter_app4_uninotemaster/modals/note_modals.dart';
+import 'package:flutter_app4_uninotemaster/services/assignment_service.dart';
+import 'package:flutter_app4_uninotemaster/services/note_service.dart';
 import 'package:flutter_app4_uninotemaster/utils/constant.dart';
 import 'package:flutter_app4_uninotemaster/utils/router_pages.dart';
 import 'package:flutter_app4_uninotemaster/utils/text_style.dart';
+import 'package:flutter_app4_uninotemaster/widget/home_screen_assignments_card.dart';
 import 'package:flutter_app4_uninotemaster/widget/note_todo_card.dart';
 import 'package:flutter_app4_uninotemaster/widget/progress_card.dart';
 
@@ -15,6 +18,47 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  List<NoteModals> allNotes = [];
+  List<AssignmentModals> allAss = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfUserNew();
+    setState(() {});
+  }
+
+  void _checkIfUserNew() async {
+    // Check if the notes box is empty
+    final bool isNewUser = await NoteService().isNewUser() ||
+        await AssignmentService().isNewUser();
+
+    if (isNewUser) {
+      // If the user is new, create the initial notes
+      await NoteService().createInitialNotes();
+      await AssignmentService().createInitialAssignment();
+    }
+    _loadNotes();
+    _loadAss();
+  }
+
+  // load the all notes
+  Future<void> _loadNotes() async {
+    final List<NoteModals> loadedNotes = await NoteService().loadNote();
+    setState(() {
+      allNotes = loadedNotes;
+    });
+  }
+
+  // load the all Assignments
+  Future<void> _loadAss() async {
+    final List<AssignmentModals> loadedAss =
+        await AssignmentService().loadAssignment();
+    setState(() {
+      allAss = loadedAss;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,9 +75,9 @@ class _HomepageState extends State<Homepage> {
             const SizedBox(
               height: 10,
             ),
-            const ProgressCard(
-              completedTask: 2,
-              totalTask: 5,
+            ProgressCard(
+              completedTask: allAss.where((ass) => ass.icCompleted).length,
+              totalTask: allAss.length,
             ),
             const SizedBox(
               height: AppConstants.kDefaultPadding * 1.5,
@@ -46,9 +90,9 @@ class _HomepageState extends State<Homepage> {
                     // go ot the notes page
                     RouterClass.router.push("/notes");
                   },
-                  child: const NoteTodoCard(
+                  child: NoteTodoCard(
                     title: "Notes",
-                    description: "3 notes",
+                    description: "${allNotes.length.toString()} notes",
                     icon: Icons.bookmark_add_outlined,
                   ),
                 ),
@@ -57,9 +101,9 @@ class _HomepageState extends State<Homepage> {
                     // go to the assignment page
                     RouterClass.router.push("/assignment");
                   },
-                  child: const NoteTodoCard(
+                  child: NoteTodoCard(
                     title: "Assignment",
-                    description: "3 Tasks",
+                    description: "${allAss.length.toString()} Tasks",
                     icon: Icons.today_outlined,
                   ),
                 ),
@@ -80,7 +124,56 @@ class _HomepageState extends State<Homepage> {
                   style: AppTextStyles.appButton,
                 ),
               ],
-            )
+            ),
+            const SizedBox(height: 20),
+            allAss.isEmpty
+                ? Container(
+                    margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.1),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            "No Assignments for today , Add some Assignments to get started!",
+                            style: AppTextStyles.appDescription.copyWith(
+                              color: Colors.grey,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                Colors.blue,
+                              ),
+                            ),
+                            onPressed: () {
+                              RouterClass.router.push("/assignment");
+                            },
+                            child: const Text("Add Task"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: allAss.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: HomeScreenAssignmentsCard(
+                            assTitle: allAss[index].title,
+                            date: allAss[index].date.toString(),
+                            time: allAss[index].time.toString(),
+                            isDone: allAss[index].icCompleted,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

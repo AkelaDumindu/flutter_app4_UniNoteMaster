@@ -58,12 +58,23 @@ class _CompletedTabState extends State<CompletedTab> {
               itemCount: widget.completedAssignments.length,
               itemBuilder: (context, index) {
                 final AssignmentModals ass = widget.completedAssignments[index];
-                return AssignmentCard(
-                  assignments: ass,
-                  isCompleted: false,
-                  onCheckBoxChanged: () {
-                    _removeMark(ass);
+                return Dismissible(
+                  key: Key(ass.id.toString()),
+                  onDismissed: (direction) {
+                    setState(() {
+                      widget.completedAssignments.removeAt(index);
+                      AssignmentService().deleteAssignment(ass);
+                    });
+
+                    AppHelpers.showSnackBar(context, "Deleted");
                   },
+                  child: AssignmentCard(
+                    assignments: ass,
+                    isCompleted: false,
+                    onCheckBoxChanged: () {
+                      _removeMark(ass);
+                    },
+                  ),
                 );
               },
             ),

@@ -35,7 +35,7 @@ class _AssignmentTabState extends State<AssignmentTab> {
         widget.incompletedAssignment.remove(ass);
         widget.completedAssignment.add(ass);
       });
-      RouterClass.router.go("/assignment");
+      RouterClass.router.push("/assignment");
     } catch (e) {
       print(e);
     }
@@ -62,12 +62,25 @@ class _AssignmentTabState extends State<AssignmentTab> {
               itemBuilder: (context, index) {
                 final AssignmentModals ass =
                     widget.incompletedAssignment[index];
-                return AssignmentCard(
-                  assignments: ass,
-                  isCompleted: false,
-                  onCheckBoxChanged: () {
-                    _markAsDone(ass);
+                return Dismissible(
+                  key: Key(ass.id.toString()),
+                  onDismissed: (direction) {
+                    setState(() {
+                      // delete widget from assignment tab
+                      widget.incompletedAssignment.removeAt(index);
+
+                      // delete assignemnt from box
+                      AssignmentService().deleteAssignment(ass);
+                    });
+                    AppHelpers.showSnackBar(context, "Deleted");
                   },
+                  child: AssignmentCard(
+                    assignments: ass,
+                    isCompleted: false,
+                    onCheckBoxChanged: () {
+                      _markAsDone(ass);
+                    },
+                  ),
                 );
               },
             ),

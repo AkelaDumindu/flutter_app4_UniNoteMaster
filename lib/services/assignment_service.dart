@@ -74,4 +74,16 @@ class AssignmentService {
       print(e);
     }
   }
+
+  // method to delete assignments
+  Future<void> deleteAssignment(AssignmentModals ass) async {
+    try {
+      //get all notes from the box
+      final dynamic allAss = await _myBox.get("ass");
+      allAss.remove(ass);
+      await _myBox.put("ass", allAss);
+    } catch (e) {
+      print(e);
+    }
+  }
 }
