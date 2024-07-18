@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app4_uninotemaster/helpers/snackbar.dart';
 import 'package:flutter_app4_uninotemaster/modals/assignment_modals.dart';
+import 'package:flutter_app4_uninotemaster/pages/assignment_data_inherited.dart';
 import 'package:flutter_app4_uninotemaster/services/assignment_service.dart';
 import 'package:flutter_app4_uninotemaster/utils/colors.dart';
 import 'package:flutter_app4_uninotemaster/utils/text_style.dart';
@@ -68,15 +69,20 @@ class _AssignmentPageState extends State<AssignmentPage>
   //method to add assignment
 
   void _addAss() async {
-    try {
-      if (_assignmentController.text.isNotEmpty) {
-        final AssignmentModals newAss = AssignmentModals(
-          title: _assignmentController.text,
-          date: DateTime.now(),
-          time: DateTime.now(),
-          icCompleted: false,
-        );
+    if (_assignmentController.text.isNotEmpty) {
+      final AssignmentModals newAss = AssignmentModals(
+        title: _assignmentController.text,
+        date: DateTime.now(),
+        time: DateTime.now(),
+        icCompleted: false,
+      );
+      try {
         await AssignmentService().addAssignment(newAss);
+        _loadAssignment();
+        final todosData = AssignmentData.of(context);
+        if (todosData != null) {
+          todosData.onAssignmentChange();
+        }
         setState(() {
           allAssignments.add(newAss);
           incompletedAssignments.add(newAss);
@@ -86,10 +92,10 @@ class _AssignmentPageState extends State<AssignmentPage>
         // ignore: use_build_context_synchronously
         AppHelpers.showSnackBar(context, "Task Added");
         Navigator.pop(context);
+      } catch (e) {
+        AppHelpers.showSnackBar(context, "Failed to add task");
+        print(e);
       }
-    } catch (e) {
-      AppHelpers.showSnackBar(context, "Failed to add task");
-      print(e);
     }
   }
 
@@ -166,60 +172,64 @@ class _AssignmentPageState extends State<AssignmentPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(
-              child: Text(
-                "Assignment",
-                style: AppTextStyles.appDescription,
+    return AssignmentData(
+      assignmentData: allAssignments,
+      onAssignmentChange: _loadAssignment,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(
+                child: Text(
+                  "Assignment",
+                  style: AppTextStyles.appDescription,
+                ),
               ),
+              Tab(
+                child: Text(
+                  "Completed",
+                  style: AppTextStyles.appDescription,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        //floating aaction button
+
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            openMessageModal(context);
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(50),
             ),
-            Tab(
-              child: Text(
-                "Completed",
-                style: AppTextStyles.appDescription,
-              ),
+            side: BorderSide(
+              color: AppColors.kWhiteColor,
+              width: 2,
+            ),
+          ),
+          child: Icon(
+            Icons.add,
+            color: AppColors.kWhiteColor,
+            size: 30,
+          ),
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            AssignmentTab(
+              incompletedAssignment: incompletedAssignments,
+              completedAssignment: completedAssignments,
+            ),
+            CompletedTab(
+              completedAssignments: completedAssignments,
+              inCompletedAssignments: incompletedAssignments,
             ),
           ],
         ),
-      ),
-
-      //floating aaction button
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          openMessageModal(context);
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(50),
-          ),
-          side: BorderSide(
-            color: AppColors.kWhiteColor,
-            width: 2,
-          ),
-        ),
-        child: Icon(
-          Icons.add,
-          color: AppColors.kWhiteColor,
-          size: 30,
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          AssignmentTab(
-            incompletedAssignment: incompletedAssignments,
-            completedAssignment: completedAssignments,
-          ),
-          CompletedTab(
-            completedAssignments: completedAssignments,
-            inCompletedAssignments: incompletedAssignments,
-          ),
-        ],
       ),
     );
   }

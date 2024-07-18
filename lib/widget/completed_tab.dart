@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app4_uninotemaster/helpers/snackbar.dart';
 import 'package:flutter_app4_uninotemaster/modals/assignment_modals.dart';
+import 'package:flutter_app4_uninotemaster/pages/assignment_data_inherited.dart';
 import 'package:flutter_app4_uninotemaster/services/assignment_service.dart';
 import 'package:flutter_app4_uninotemaster/utils/router_pages.dart';
 import 'package:flutter_app4_uninotemaster/widget/assignment_card.dart';
@@ -44,42 +45,47 @@ class _CompletedTabState extends State<CompletedTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 10,
-      ),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.completedAssignments.length,
-              itemBuilder: (context, index) {
-                final AssignmentModals ass = widget.completedAssignments[index];
-                return Dismissible(
-                  key: Key(ass.id.toString()),
-                  onDismissed: (direction) {
-                    setState(() {
-                      widget.completedAssignments.removeAt(index);
-                      AssignmentService().deleteAssignment(ass);
-                    });
-
-                    AppHelpers.showSnackBar(context, "Deleted");
-                  },
-                  child: AssignmentCard(
-                    assignments: ass,
-                    isCompleted: false,
-                    onCheckBoxChanged: () {
-                      _removeMark(ass);
-                    },
-                  ),
-                );
-              },
+    return AssignmentData(
+      assignmentData: widget.completedAssignments,
+      onAssignmentChange: () {},
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 10,
+        ),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.completedAssignments.length,
+                itemBuilder: (context, index) {
+                  final AssignmentModals ass =
+                      widget.completedAssignments[index];
+                  return Dismissible(
+                    key: Key(ass.id.toString()),
+                    onDismissed: (direction) {
+                      setState(() {
+                        widget.completedAssignments.removeAt(index);
+                        AssignmentService().deleteAssignment(ass);
+                      });
+
+                      AppHelpers.showSnackBar(context, "Deleted");
+                    },
+                    child: AssignmentCard(
+                      assignments: ass,
+                      isCompleted: false,
+                      onCheckBoxChanged: () {
+                        _removeMark(ass);
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
